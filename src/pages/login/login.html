@@ -1,0 +1,44 @@
+<ion-content class="login-content" padding>
+  <ion-row class="logo-row">
+    <ion-col></ion-col>
+    <ion-col width-67>
+      <p style="font-size: 16px">
+        Login to our awesome website
+      </p>
+    </ion-col>
+    <ion-col></ion-col>
+  </ion-row>
+  <div class="login-box">
+    <form (ngSubmit)="login()" [formGroup]="logIn" novalidate>
+      <ion-row>
+        <ion-col col-md-6 offset-md-3>
+          <ion-list inset>
+
+            <ion-item>
+              <ion-input type="text" placeholder="Username" formControlName="username" required></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="password" placeholder="Password" formControlName="password" required></ion-input>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <div class="captcha-div" ionCaptcha key="6LevrjQUAAAAAM5WB0Xu_ttsNRqpXeSPV6F0_zek" formControlName="captcha"></div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col class="signup-col" col-md-6 offset-md-3>
+          <button ion-button class="submit-btn" full type="submit" [disabled]="!logIn.valid">Login</button>
+          <button ion-button class="register-btn" block type="button" clear (click)="createAccount()">Create New Account</button>
+        </ion-col>
+      </ion-row>
+
+    </form>
+  </div>
+</ion-content>

@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>Register</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="login-content" padding>
+  <div class="login-box">
+
+    <form (ngSubmit)="register()" [formGroup]="registerForm" novalidate>
+      <ion-row>
+        <ion-col col-md-8 offset-md-2>
+          <ion-list inset>
+
+            <ion-item>
+              <ion-input type="text" placeholder="Name" formControlName="name" required></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="text" placeholder="Email" formControlName="email" required></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="text" placeholder="Username" formControlName="username" required></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="password" placeholder="Password" formControlName="password" required></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col class="captcha-col">
+          <div class="captcha-div" ionCaptcha key="6LevrjQUAAAAAM5WB0Xu_ttsNRqpXeSPV6F0_zek" formControlName="captcha"></div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row justify-content-center>
+        <ion-col class="signup-col" col-md-6 offset-md-3>
+          <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.valid">Register</button>
+        </ion-col>
+      </ion-row>
+
+    </form>
+  </div>
+</ion-content>
