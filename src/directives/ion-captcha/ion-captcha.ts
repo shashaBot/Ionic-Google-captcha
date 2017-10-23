@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, EventEmitter, forwardRef, Inject, Injectable, InjectionToken, Injector, Input, NgZone, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, EventEmitter, forwardRef, Injectable, Injector, Input, NgZone, OnInit, Output } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl, Validators } from '@angular/forms';
 import { Http } from '@angular/http';
 
@@ -16,12 +16,16 @@ declare global {
 @Injectable()
 class ReCaptchaAsyncValidator {
 
+  // public baseUrl: string = 'http://localhost:8080/';
+  // public baseUrl: string = '';
+  public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
+
   constructor( private http : Http ) {
   }
 
   validateToken( token : string ) {
     return ( _ : AbstractControl ) => {
-      return this.http.get('/validate_captcha', { params: { token } }).map(res => res.json()).map(res => {
+      return this.http.get(this.baseUrl+'validate_captcha', { params: { token } }).map(res => res.json()).map(res => {
         if( !res.success ) {
           return { tokenInvalid: true }
         }

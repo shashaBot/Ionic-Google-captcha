@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
-import {Observable} from 'rxjs/Observable';
 import { tokenNotExpired } from 'angular2-jwt';
 import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthService {
-  currentUser: any;
+  public currentUser: any;
   authToken: string;
+  // public baseUrl: string = 'http://localhost:8080/';
+  // public baseUrl: string = '';
+  public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
 
   constructor( private http: Http){}
   public login(credentials) {
@@ -17,10 +19,7 @@ export class AuthService {
     } else {
       let headers = new Headers();
       headers.append('Content-type', 'application/json');
-      return this.http.post('users/authenticate', credentials, {headers: headers}).map(res => {
-        console.log(res.json());
-        return res.json()
-      });
+      return this.http.post(this.baseUrl+'users/authenticate', credentials, {headers: headers}).map(res => res.json());
     }
   }
 
@@ -32,7 +31,7 @@ export class AuthService {
       // At this point store the credentials to your backend!
       let headers = new Headers();
       headers.append('Content-type', 'application/json');
-      return this.http.post('users/register', credentials, {headers: headers}).map(res => res.json());
+      return this.http.post(this.baseUrl+'users/register', credentials, {headers: headers}).map(res => res.json());
     }
   }
 
@@ -41,7 +40,15 @@ export class AuthService {
     this.loadToken();
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.authToken);
-    return this.http.get('users/profile', {headers: headers}).map(res => res.json());
+    return this.http.get(this.baseUrl+'users/profile', {headers: headers}).map(res => res.json());
+  }
+
+  getSignedInUser() {
+    return this.currentUser;
+  }
+
+  getToken() {
+    return localStorage.getItem('id_token');
   }
 
   loadToken() {

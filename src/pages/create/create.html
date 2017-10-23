@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>
+      Create Session
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <form (ngSubmit)="createSession(newSessionForm.form)" #newSessionForm="ngForm">
+    <ion-row>
+      <ion-col col-md-6 offset-md-3 col-sm-auto>
+        <ion-list inset>
+          <ion-item>
+            <ion-input type="text" placeholder="Name" name="name" [(ngModel)]="newSession.name"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="text" placeholder="Description" name="desc" [(ngModel)]="newSession.desc"></ion-input>
+          </ion-item>
+        </ion-list>
+          <ion-row>
+            <!-- <ion-input type="text" *ngFor="file of files" value="file.name" disabled></ion-input> -->
+            <!-- <button type="button" ion-button class="upload-button" (click)="uploadSheet()">Add Media</button> -->
+            <!-- <div ion-col col-sm-6 class="upload-button">
+              <input type="file" name="files" id="upload_file" #files="ngModel" name="upload_file" (change)="onFileChoose($event)" accept="image/*,video/*,audio/*" required/>
+              <label for="upload_file"><span class="banner">Upload</span></label>
+            </div> -->
+            <ion-col col-sm-6>
+              <label ion-button full class="file-button">Select File
+                <input type="file" name="upload_file" ng2FileSelect [uploader]="fileUploadService" [multiple]="multiple" style="display: none"/>
+              </label>
+            </ion-col>
+            <ion-col col-sm-6>
+              <button ion-button full type="button" (click)="uploadAll()">Upload All</button>
+            </ion-col>
+            <!-- <ion-col col-sm-6>
+              <button class="capture-button" ion-button icon-left type="button" (click)="mediaCapture()">
+                <ion-icon name="color-wand"></ion-icon>
+              </button>
+            </ion-col> -->
+          </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-md-8 offset-md-2 col-sm-auto>
+        <ion-list>
+          <ion-item *ngFor="let file of fileUploadService.queue">
+            <h2>{{file.file.name}}</h2>
+            <p>{{file.file.type}}</p>
+            <p *ngIf="file.isUploading">Uploading...</p>
+            <p *ngIf="file.isError">Error!</p>
+            <button ion-button icon-only clear item-right type="button" *ngIf="!file.isUploaded" (click)="uploadFileItem(file)">
+              <ion-icon name="cloud-upload"></ion-icon>
+            </button>
+            <button ion-button clear icon-only *ngIf="file.isUploaded" type="button" (click)="removeFile(file)">
+              <ion-icon name="trash"></ion-icon>
+            </button>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button full type="submit">Create Session</button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

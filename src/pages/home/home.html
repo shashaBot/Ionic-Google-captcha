@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar color="dark">
     <ion-title>
-      Member Area
+      View Sessions
     </ion-title>
     <ion-buttons end>
       <button ion-button (click)="logout()">
@@ -13,4 +13,12 @@
 
 <ion-content class="home" padding>
   <h3>Welcome inside, {{user.name}}</h3>
+  <ion-list>
+    <ion-item *ngFor="let session of sessionList">
+      <h2>{{session.name}}</h2>
+      <p>{{session.createdAt | date: 'shortDate'}}</p>
+      <button ion-button clear item-right (click)="viewSession(session)">View</button>
+      <button ion-button clear item-right *ngIf="session.userId === user.id" (click)="editSession(session._id)" color="danger">Edit</button>
+    </ion-item>
+  </ion-list>
 </ion-content>

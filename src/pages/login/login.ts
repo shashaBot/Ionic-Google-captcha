@@ -1,29 +1,30 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController, Loading, IonicPage } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, Loading, IonicPage, Platform } from 'ionic-angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../providers/auth-service/auth-service';
-import { RegisterPage } from '../register/register';
-import { HomePage } from '../home/home';
-// import { RECAPTCHA_URL } from '../../directives/ion-captcha/ion-captcha';
 
+@IonicPage({
+  name: 'login-page'
+})
 @Component({
   selector: 'page-login',
-  templateUrl: 'login.html',
-  // providers: [{
-  //   provide: RECAPTCHA_URL,
-  //   useValue: '/validate_captcha'
-  // }]
+  templateUrl: 'login.html'
 })
 export class LoginPage {
   loading: Loading;
 
+  captchaKey: string = '6LevrjQUAAAAAM5WB0Xu_ttsNRqpXeSPV6F0_zek';
   logIn: FormGroup = new FormGroup({
     username: new FormControl(null, Validators.required),
     password: new FormControl(null, Validators.required),
-    captcha: new FormControl()
+    // captcha: new FormControl()
   });
 
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {}
+  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private plt: Platform) {
+    if(this.plt.is('android')){
+      this.captchaKey = '6Le1ajUUAAAAAFBJmWVU2NAZaMM0sHWDB4WBMqtU';
+    }
+  }
 
   // ionViewCanEnter(): boolean {
   //   if(this.auth.loggedIn()){
@@ -34,7 +35,7 @@ export class LoginPage {
   // }
 
   public createAccount() {
-    this.nav.push(RegisterPage);
+    this.nav.push('register-page');
   }
 
   public login() {
@@ -47,7 +48,7 @@ export class LoginPage {
     this.auth.login(credentials).subscribe(data => {
       if (data.success) {
         this.auth.storeUserData(data.token, data.user);
-        this.nav.setRoot(HomePage);
+        this.nav.setRoot('tabs-page');
       } else {
         this.showError(data.msg);
       }

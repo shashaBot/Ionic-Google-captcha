@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, IonicPage, Loading, LoadingController } from 'ionic-angular';
+import { NavController, AlertController, IonicPage, Loading, LoadingController, Platform } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service/auth-service';
-import { HomePage } from '../home/home';
 
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
+@IonicPage({
+  name: 'register-page'
+})
 @Component({
   selector: 'page-register',
   templateUrl: 'register.html',
@@ -12,16 +14,21 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class RegisterPage {
   createSuccess = false;
   loading: Loading;
+  captchaKey: string = '6LevrjQUAAAAAM5WB0Xu_ttsNRqpXeSPV6F0_zek';
 
   registerForm: FormGroup = new FormGroup({
     username: new FormControl(null, Validators.required),
     email: new FormControl(null, Validators.required),
     password: new FormControl(null, Validators.required),
     name: new FormControl(null, Validators.required),
-    captcha: new FormControl()
+    // captcha: new FormControl()
   });
-  
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) { }
+
+  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private plt: Platform) {
+    if(this.plt.is('android')){
+      this.captchaKey = '6Le1ajUUAAAAAFBJmWVU2NAZaMM0sHWDB4WBMqtU';
+    }
+  }
 
 
   // ionViewCanEnter(): boolean {
