@@ -1,6 +1,6 @@
 <ion-content>
   <video id="videoPlayer" controls *ngIf="dataUrl">
-    <source src="dataUrl" type="video/mp4">
+    <source [src]="'data:video/mp4;base64,'+dataUrl" type="video/mp4">
   </video>
   <pre>
     {{ file | json }}

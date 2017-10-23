@@ -16,9 +16,9 @@ declare global {
 @Injectable()
 class ReCaptchaAsyncValidator {
 
-  // public baseUrl: string = 'http://localhost:8080/';
+  public baseUrl: string = 'http://localhost:8080/';
   // public baseUrl: string = '';
-  public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
+  // public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
 
   constructor( private http : Http ) {
   }

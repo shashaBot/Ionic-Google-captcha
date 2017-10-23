@@ -9,9 +9,9 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class SessionProvider {
 
-  // public baseUrl: string = 'http://localhost:8080/';
+  public baseUrl: string = 'http://localhost:8080/';
   // public baseUrl: string = '';
-  public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
+  // public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
 
   constructor(public http: Http, private transfer: FileTransfer, private file: File, private auth: AuthService) {
     console.log('Hello SessionProvider Provider');
@@ -45,6 +45,7 @@ export class SessionProvider {
   stream(file) {
     let headers = new Headers();
     headers.append('Authorization', this.auth.getToken());
+    headers.append('Content-Range', 'bytes 0-50/1270');
     let resType: ResponseContentType = ResponseContentType['ArrayBuffer'];
     return this.http.post(this.baseUrl+'session/stream_files', file, {headers: headers, responseType: resType})
         .map(res => res.arrayBuffer());

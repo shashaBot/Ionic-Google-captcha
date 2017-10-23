@@ -13,9 +13,9 @@ import { FileUploader, FileUploaderOptions, FileItem } from 'ng2-file-upload';
 })
 export class CreatePage {
   uploadFiles = [];
-  // public baseUrl: string = 'http://localhost:8080/';
+  public baseUrl: string = 'http://localhost:8080/';
   // public baseUrl: string = '';
-  public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
+  // public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
 
   public newSession: any = {
     name: '',
