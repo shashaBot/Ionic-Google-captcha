@@ -7,9 +7,9 @@ import 'rxjs/add/operator/map';
 export class AuthService {
   public currentUser: any;
   authToken: string;
-  public baseUrl: string = 'http://localhost:8080/';
+  // public baseUrl: string = 'http://localhost:8080/';
   // public baseUrl: string = '';
-  // public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
+  public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
 
   constructor( private http: Http){}
   public login(credentials) {

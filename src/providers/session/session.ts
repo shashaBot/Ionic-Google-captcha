@@ -9,9 +9,9 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class SessionProvider {
 
-  public baseUrl: string = 'http://localhost:8080/';
+  // public baseUrl: string = 'http://localhost:8080/';
   // public baseUrl: string = '';
-  // public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
+  public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
 
   constructor(public http: Http, private transfer: FileTransfer, private file: File, private auth: AuthService) {
     console.log('Hello SessionProvider Provider');
