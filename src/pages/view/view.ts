@@ -14,6 +14,7 @@ export class ViewPage {
   public file;
   public dataUrl;
   constructor(public navCtrl: NavController, public navParams: NavParams, private sessionSer: SessionProvider) {
+
     this.session = this.navParams.get('session');
     this.file = this.session.files[0];
     this.sessionSer.stream(this.file).subscribe( data => {
