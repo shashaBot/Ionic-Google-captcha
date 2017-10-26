@@ -48,7 +48,10 @@ export class SessionProvider {
     headers.append('Content-Range', 'bytes 0-50/1270');
     let resType: ResponseContentType = ResponseContentType['ArrayBuffer'];
     return this.http.get(this.baseUrl+'session/stream_files?path='+file.path, {headers: headers, responseType: resType})
-        .map(res => res.arrayBuffer());
+        .map(res => {
+          console.log(res);
+          return res.arrayBuffer()
+        });
   }
 
   viewSession(sessionId) {

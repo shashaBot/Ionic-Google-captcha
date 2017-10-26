@@ -1,8 +1,19 @@
 <ion-content>
-  <video id="videoPlayer" controls *ngIf="dataUrl">
-    <source [src]="'data:video/mp4;base64,'+dataUrl" type="video/mp4">
-  </video>
+  <div #mediaContainer ></div>
+  <!-- <div id="videoPlayerDiv" *ngIf="file.type.indexOf('video/') !== -1">
+    <video #videoPlayer controls width="100%" autoplay="true"  (ended)="onFileEnd()">
+      <source [src]="baseUrl+apiUrl+file.path" type="video/mp4" />
+    </video>
+  </div>
+  <div id="audioPlayerDiv" *ngIf="file.type.indexOf('audio/') !== -1">
+    <audio #audioPlayer controls *ngIf="dataUrl" autoplay="true"  (ended)="onFileEnd()">
+      <source [src]="'data:'+file.type+';base64,'+dataUrl" [type]="file.type" />
+    </audio>
+  </div>
+  <div id="imageBoxDiv" *ngIf="file.type.indexOf('image/') !== -1">
+    <img [src]="'data:'+file.type+';base64,'+dataUrl" class="mediafile-image" #image  (load)="onFileEnd()" />
+  </div> -->
   <pre>
-    {{ file | json }}
+    {{file | json}}
   </pre>
 </ion-content>
