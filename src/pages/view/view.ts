@@ -18,7 +18,8 @@ export class ViewPage implements AfterViewInit {
   @ViewChild('audioPlayer') audioPlayer;
   @ViewChild('image') imageEl;
   @ViewChild('mediaContainer') mediaContainer;
-  baseUrl: string = 'http://localhost:8080/';
+  // baseUrl: string = 'http://localhost:8080/';
+  baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
   apiUrl: string = 'session/stream_files?path='
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sessionSer: SessionProvider, private ren: Renderer2) {
