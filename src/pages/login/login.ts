@@ -49,7 +49,7 @@ export class LoginPage {
     this.auth.login(credentials).subscribe(data => {
       if (data.success) {
         this.auth.storeUserData(data.token, data.user);
-        this.nav.setRoot('tabs-page');
+        this.nav.push('tabs-page');
       } else {
         this.showError(data.msg);
       }

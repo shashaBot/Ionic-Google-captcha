@@ -82,11 +82,16 @@ export class ViewPage implements AfterViewInit {
         this.playFile(this.session.files[this.fileIndex]);
       });
       this.ren.listen(mediaEl, 'loadstart', (e) => {
-        this.showMediaLoading();
+        if(!this.mediaLoading)
+          this.showMediaLoading();
       })
       this.ren.listen(mediaEl, 'play', (e) => {
         if(this.mediaLoading)
           this.mediaLoading.dismiss();
+      });
+      this.ren.listen(mediaEl, 'waiting', (e) => {
+        if(!this.mediaLoading)
+          this.showMediaLoading();
       });
     }
     if(type.indexOf('video/') !== -1) {
@@ -108,6 +113,10 @@ export class ViewPage implements AfterViewInit {
       this.ren.listen(mediaEl, 'play', (e) => {
         if(this.mediaLoading)
           this.mediaLoading.dismiss();
+      });
+      this.ren.listen(mediaEl, 'waiting', (e) => {
+        if(!this.mediaLoading)
+          this.showMediaLoading();
       });
     }
     this.ren.appendChild(mediaDiv, mediaEl);
