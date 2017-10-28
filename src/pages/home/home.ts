@@ -15,13 +15,22 @@ export class HomePage {
   sessionList: Array<any> = [];
   loading: Loading;
 
-  constructor(private nav: NavController,
+  constructor(
+    private nav: NavController,
     private auth: AuthService,
     private session: SessionProvider,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController) {
     this.user = this.auth.getSignedInUser();
   }
+
+  // ionViewCanEnter(): boolean {
+  //   if(!this.auth.loggedIn()){
+  //     this.nav.setRoot('login-page');
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   ionViewWillEnter() {
     this.showLoading();

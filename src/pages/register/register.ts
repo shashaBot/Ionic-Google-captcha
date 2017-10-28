@@ -30,10 +30,9 @@ export class RegisterPage {
     }
   }
 
-
   // ionViewCanEnter(): boolean {
   //   if(this.auth.loggedIn()){
-  //     this.nav.setRoot(HomePage);
+  //     this.nav.setRoot('home-page');
   //     return false;
   //   }
   //   else return true;

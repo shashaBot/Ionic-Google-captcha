@@ -12,6 +12,7 @@ import { AuthService } from '../../providers/auth-service/auth-service';
 })
 export class LoginPage {
   loading: Loading;
+  tabBarElement: any;
 
   captchaKey: string = '6LevrjQUAAAAAM5WB0Xu_ttsNRqpXeSPV6F0_zek';
   logIn: FormGroup = new FormGroup({
@@ -28,10 +29,10 @@ export class LoginPage {
 
   // ionViewCanEnter(): boolean {
   //   if(this.auth.loggedIn()){
-  //     this.nav.setRoot(HomePage);
+  //     this.nav.setRoot('home-page');
   //     return false;
   //   }
-  //   else return true;
+  //   return true;
   // }
 
   public createAccount() {

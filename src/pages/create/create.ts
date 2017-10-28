@@ -13,9 +13,9 @@ import { FileUploader, FileUploaderOptions, FileItem } from 'ng2-file-upload';
 })
 export class CreatePage {
   uploadFiles = [];
-  public baseUrl: string = 'http://localhost:8080/';
+  // public baseUrl: string = 'http://localhost:8080/';
   // public baseUrl: string = '';
-  // public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
+  public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
 
   public newSession: any = {
     name: '',
@@ -53,11 +53,19 @@ export class CreatePage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private session: SessionProvider,
-    private actionSheetCtrl: ActionSheetController,
+    // private actionSheetCtrl: ActionSheetController,
     private auth: AuthService,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController) {
+  }
+
+  ionViewCanEnter(): boolean {
+    if(!this.auth.loggedIn()){
+      this.navCtrl.setRoot('login-page');
+      return false;
+    }
+    else return true;
   }
 
   public fileUploadService: FileUploader = new FileUploader({url: this.url});
@@ -124,6 +132,7 @@ export class CreatePage {
     this.session.createSession(this.newSession).subscribe( data => {
       this.loading.dismiss();
       form.reset();
+      this.fileUploadService.clearQueue();
       this.newSession.files = [];
       this.newSession.token = Date.now();
       if(data.success) {

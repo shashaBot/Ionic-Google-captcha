@@ -1,8 +1,10 @@
-<ion-header >
+<ion-header no-border>
   <ion-navbar transparent>
-    <ion-title>{{file?.name}}</ion-title>
+    <ion-title>{{session?.name}}</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content class="media-page">
-  <div #mediaContainer class="media-container"></div>
+<ion-content fullscreen class="media-page">
+  <div #mediaContainer class="media-container">
+    <!-- <div class="progress-bar"></div> -->
+  </div>
 </ion-content>

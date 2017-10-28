@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, ResponseContentType } from '@angular/http';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
-import { File } from '@ionic-native/file';
+// import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { AuthService } from '../auth-service/auth-service';
 
 import 'rxjs/add/operator/map';
@@ -9,26 +8,28 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class SessionProvider {
 
-  public baseUrl: string = 'http://localhost:8080/';
+  // public baseUrl: string = 'http://localhost:8080/';
   // public baseUrl: string = '';
-  // public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
+  public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
 
-  constructor(public http: Http, private transfer: FileTransfer, private file: File, private auth: AuthService) {
+  constructor(public http: Http,
+    //  private transfer: FileTransfer,
+     private auth: AuthService) {
     console.log('Hello SessionProvider Provider');
   }
 
-  fileTransfer: FileTransferObject = this.transfer.create();
+  // fileTransfer: FileTransferObject = this.transfer.create();
 
-  upload(filePath: string) {
-    let options: FileUploadOptions = {
-       fileKey: 'sessionFile',
-       fileName: Date.now()+'',
-       mimeType: 'image/jpeg',
-       headers: {Authorization: this.auth.getToken()}
-    }
-
-    return this.fileTransfer.upload(filePath, this.baseUrl+'session/create', options, true);
-  }
+  // upload(filePath: string) {
+  //   let options: FileUploadOptions = {
+  //      fileKey: 'sessionFile',
+  //      fileName: Date.now()+'',
+  //      mimeType: 'image/jpeg',
+  //      headers: {Authorization: this.auth.getToken()}
+  //   }
+  //
+  //   return this.fileTransfer.upload(filePath, this.baseUrl+'session/create', options, true);
+  // }
 
   createSession(session) {
     let headers = new Headers();

@@ -41,7 +41,8 @@ page-login {
        box-shadow: none !important;
      }
 
-     .submit-btn {
+     .submit-btn, .submit-btn:active,
+     .submit-btn:hover {
        background: #51CFB1;
        border-radius: 30px !important;
        border: 1px solid #ffffff;

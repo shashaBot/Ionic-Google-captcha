@@ -13,7 +13,7 @@
 <ion-content>
   <form (ngSubmit)="createSession(newSessionForm.form)" #newSessionForm="ngForm">
     <ion-row>
-      <ion-col col-md-6 offset-md-3 col-sm-auto>
+      <ion-col col-md-8 offset-md-2 col-sm-12>
         <ion-list inset>
           <ion-item>
             <ion-input type="text" placeholder="Name" name="name" [(ngModel)]="newSession.name"></ion-input>
@@ -46,12 +46,12 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col col-md-8 offset-md-2 col-sm-auto>
+      <ion-col col-md-8 offset-md-2 col-sm-12>
         <ion-list>
           <ion-item *ngFor="let file of fileUploadService.queue">
             <h2>{{file.file.name}}</h2>
             <p>{{file.file.type}}</p>
-            <p *ngIf="file.isUploading">Uploading...{{file.progress}}</p>
+            <p *ngIf="file.isUploading">Uploading...{{file.progress}}%</p>
             <p *ngIf="file.isError">Error!</p>
             <button ion-button icon-only clear item-right type="button" *ngIf="!(file.isUploaded || file.isUploading)" (click)="uploadFileItem(file)">
               <ion-icon name="cloud-upload"></ion-icon>
@@ -67,7 +67,7 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col>
+      <ion-col col-md-8 offset-md-2 col-sm-12>
         <button ion-button full type="submit">Create Session</button>
       </ion-col>
     </ion-row>

@@ -16,8 +16,8 @@ import { HttpModule } from '@angular/http';
 import { MyApp } from './app.component';
 // import { IonCaptchaDirective } from '../directives/ion-captcha/ion-captcha';
 import { SessionProvider } from '../providers/session/session';
-import { FileTransfer } from '@ionic-native/file-transfer';
-import { File } from '@ionic-native/file';
+// import { FileTransfer } from '@ionic-native/file-transfer';
+// import { File } from '@ionic-native/file';
 // import { MediaCapture } from '@ionic-native/media-capture';
 import { AuthService } from '../providers/auth-service/auth-service';
 
@@ -37,7 +37,7 @@ import { AuthService } from '../providers/auth-service/auth-service';
     BrowserModule,
     IonicModule.forRoot(MyApp, {
       //tabs config
-      tabsHideonSubPages: true
+      tabsHideOnSubPages: true
     }),
     HttpModule,
     // FormsModule,
@@ -58,8 +58,8 @@ import { AuthService } from '../providers/auth-service/auth-service';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService,
     SessionProvider,
-    FileTransfer,
-    File,
+    // FileTransfer,
+    // File,
     // MediaCapture
   ]
 })

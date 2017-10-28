@@ -1,5 +1,5 @@
 <ion-content class="login-content" padding>
-  <ion-row class="logo-row">
+  <!-- <ion-row class="logo-row">
     <ion-col></ion-col>
     <ion-col width-67>
       <p style="font-size: 16px">
@@ -7,11 +7,11 @@
       </p>
     </ion-col>
     <ion-col></ion-col>
-  </ion-row>
+  </ion-row> -->
   <div class="login-box">
     <form (ngSubmit)="login()" [formGroup]="logIn" novalidate>
       <ion-row>
-        <ion-col col-md-6 offset-md-3>
+        <ion-col col-md-8 offset-md-2>
           <ion-list inset>
 
             <ion-item>
@@ -33,7 +33,7 @@
       </ion-row> -->
 
       <ion-row>
-        <ion-col class="signup-col" col-md-6 offset-md-3>
+        <ion-col class="signup-col" col-md-8 offset-md-2>
           <button ion-button class="submit-btn" full type="submit" [disabled]="!logIn.valid">Login</button>
           <button ion-button class="register-btn" block type="button" clear (click)="createAccount()">Create New Account</button>
         </ion-col>

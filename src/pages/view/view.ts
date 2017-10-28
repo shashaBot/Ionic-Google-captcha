@@ -15,6 +15,7 @@ export class ViewPage implements AfterViewInit {
   public dataUrl;
 
   public loading: Loading;
+  public mediaLoading: Loading
   public leaving: Boolean = false;
 
   private fileIndex: number = 0;
@@ -22,8 +23,8 @@ export class ViewPage implements AfterViewInit {
   @ViewChild('audioPlayer') audioPlayer;
   @ViewChild('image') imageEl;
   @ViewChild('mediaContainer') mediaContainer;
-  baseUrl: string = 'http://localhost:8080/';
-  // baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
+  // baseUrl: string = 'http://localhost:8080/';
+  baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
   apiUrl: string = 'session/stream_files?path='
 
   constructor(public navCtrl: NavController,
@@ -46,7 +47,7 @@ export class ViewPage implements AfterViewInit {
     this.file = file;
     let mediaDiv = this.mediaContainer.nativeElement;
     let type = file.type;
-    let mediaEl, sourceEl;
+    let mediaEl, sourceEl, audioImg;
     if(type.indexOf('image/') !== -1){
       mediaEl = this.ren.createElement('img');
       this.ren.setAttribute(mediaEl, 'src', this.baseUrl+this.apiUrl+file.path);
@@ -60,17 +61,32 @@ export class ViewPage implements AfterViewInit {
       });
     }
     if(type.indexOf('audio/') !== -1){
-      mediaEl = this.ren.createElement('audio');
-      sourceEl = this.ren.createElement('source');
+      if(!mediaEl)
+        mediaEl = this.ren.createElement('audio');
+      if(!sourceEl)
+        sourceEl = this.ren.createElement('source');
       this.ren.setProperty(mediaEl, 'autoplay', 'true');
       // this.ren.setProperty(mediaEl, 'controls', 'true');
       this.ren.setProperty(sourceEl, 'src', this.baseUrl+this.apiUrl+file.path);
       this.ren.appendChild(mediaEl, sourceEl);
+      if(!audioImg){
+        audioImg = this.ren.createElement('img');
+        this.ren.setAttribute(audioImg, 'src', 'assets/icon/headphones-icon.png');
+        this.ren.addClass(audioImg, 'audio-img');
+      }
+      this.ren.appendChild(mediaDiv, audioImg);
       this.ren.listen(mediaEl, 'ended', (e) => {
         console.log('file ended!');
         this.fileIndex++;
         this.ren.removeChild(mediaDiv, mediaEl);
         this.playFile(this.session.files[this.fileIndex]);
+      });
+      this.ren.listen(mediaEl, 'loadstart', (e) => {
+        this.showMediaLoading();
+      })
+      this.ren.listen(mediaEl, 'play', (e) => {
+        if(this.mediaLoading)
+          this.mediaLoading.dismiss();
       });
     }
     if(type.indexOf('video/') !== -1) {
@@ -85,6 +101,13 @@ export class ViewPage implements AfterViewInit {
         this.fileIndex++;
         this.ren.removeChild(mediaDiv, mediaEl);
         this.playFile(this.session.files[this.fileIndex]);
+      });
+      this.ren.listen(mediaEl, 'loadstart', (e) => {
+        this.showMediaLoading();
+      })
+      this.ren.listen(mediaEl, 'play', (e) => {
+        if(this.mediaLoading)
+          this.mediaLoading.dismiss();
       });
     }
     this.ren.appendChild(mediaDiv, mediaEl);
@@ -137,6 +160,15 @@ export class ViewPage implements AfterViewInit {
       dismissOnPageChange: true
     });
     this.loading.present();
+  }
+
+  showMediaLoading () {
+    this.mediaLoading = this.loadingCtrl.create({
+      content: 'Buffering...',
+      spinner: 'circles',
+      dismissOnPageChange: true
+    });
+    this.mediaLoading.present();
   }
 
 }
