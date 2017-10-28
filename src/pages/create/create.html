@@ -51,12 +51,15 @@
           <ion-item *ngFor="let file of fileUploadService.queue">
             <h2>{{file.file.name}}</h2>
             <p>{{file.file.type}}</p>
-            <p *ngIf="file.isUploading">Uploading...</p>
+            <p *ngIf="file.isUploading">Uploading...{{file.progress}}</p>
             <p *ngIf="file.isError">Error!</p>
-            <button ion-button icon-only clear item-right type="button" *ngIf="!file.isUploaded" (click)="uploadFileItem(file)">
+            <button ion-button icon-only clear item-right type="button" *ngIf="!(file.isUploaded || file.isUploading)" (click)="uploadFileItem(file)">
               <ion-icon name="cloud-upload"></ion-icon>
             </button>
-            <button ion-button clear icon-only *ngIf="file.isUploaded" type="button" (click)="removeFile(file)">
+            <button ion-button clear item-right type="button" *ngIf="file.isUploading" (click)="cancelFileItem(file)">
+              Cancel
+            </button>
+            <button ion-button clear icon-only item-right type="button" *ngIf="file.isUploaded" (click)="removeFile(file)">
               <ion-icon name="trash"></ion-icon>
             </button>
           </ion-item>

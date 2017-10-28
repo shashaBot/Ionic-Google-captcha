@@ -43,6 +43,7 @@ export class ViewPage implements AfterViewInit {
   playFile (file) {
     if(!file) return this.navCtrl.setRoot('home-page');
     if(this.leaving) return;
+    this.file = file;
     let mediaDiv = this.mediaContainer.nativeElement;
     let type = file.type;
     let mediaEl, sourceEl;

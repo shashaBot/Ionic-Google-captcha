@@ -36,6 +36,18 @@ export class SessionProvider {
     return this.http.post(this.baseUrl+'session/create', session, {headers: headers}).map(res => res.json());
   }
 
+  removeFile(file) {
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.getToken());
+    return this.http.post(this.baseUrl+'session/remove', file.path, {headers: headers}).map(res => res.json());
+  }
+
+  removeSession(session) {
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.getToken());
+    return this.http.post(this.baseUrl+'session/remove', session, {headers: headers}).map(res => res.json());
+  }
+
   listSession() {
     let headers = new Headers();
     headers.append('Authorization', this.auth.getToken());

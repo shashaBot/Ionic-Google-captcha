@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, AlertController, Loading, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController, AlertController, Loading, LoadingController, ToastController } from 'ionic-angular';
 import { SessionProvider } from '../../providers/session/session';
 import { AuthService } from '../../providers/auth-service/auth-service';
 import { FileUploader, FileUploaderOptions, FileItem } from 'ng2-file-upload';
@@ -56,7 +56,8 @@ export class CreatePage {
     private actionSheetCtrl: ActionSheetController,
     private auth: AuthService,
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController) {
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController) {
   }
 
   public fileUploadService: FileUploader = new FileUploader({url: this.url});
@@ -85,14 +86,22 @@ export class CreatePage {
     this.fileUploadService.onSuccessItem = (item, response, status, headers) => {
       let file = item.file;
       this.newSession.files.push(file);
+      console.log(this.newSession);
     }
 
     this.fileUploadService.onErrorItem = (item, response, status, headers) => {
       this.showError('Problem in uploading file: '+ item.file.name);
     }
 
+    this.fileUploadService.onCancelItem = (item, response, status, headers) => {
+      let index = this.newSession.files.indexOf(item);
+      if(index !== -1)
+        this.newSession.files.splice(index, 1);
+    }
+
     this.fileUploadService.onWhenAddingFileFailed = (item, filter, options) => {
-      console.log(item, options, filter);
+      this.showError('Please uploading a suitable file media type!');
+      console.log(item, filter, options);
     }
 
   }
@@ -106,11 +115,23 @@ export class CreatePage {
   }
 
   createSession(form) {
-    // this.showLoading();
+    if(!form.valid) return this.showError('All fields are required!');
+    if(this.fileUploadService.isUploading) return this.showError('Please wait for files to complete uploading!');
+    if(!this.newSession.files.length) return this.showError('Atleast one file must be uploaded in each session!');
+    this.showLoading();
     console.log('create session!');
     console.log(this.newSession);
     this.session.createSession(this.newSession).subscribe( data => {
-
+      this.loading.dismiss();
+      form.reset();
+      this.newSession.files = [];
+      this.newSession.token = Date.now();
+      if(data.success) {
+        this.presentToast('Session Created!');
+        this.navCtrl.setRoot('home-page');
+      } else {
+        this.showError(data.msg);
+      }
     });
   }
 
@@ -127,11 +148,18 @@ export class CreatePage {
   }
 
   removeFile(file: FileItem) {
-    let index = this.newSession.files.indexOf(file);
+    let index = this.newSession.files.indexOf(file.file);
+    this.fileUploadService.removeFromQueue(file);
     if(index !== -1)
       this.newSession.files.splice(index, 1);
-
     //remove file from server
+    this.session.removeFile(file.file).subscribe(data => {
+      if(data.success) {
+        this.presentToast(data.msg);
+      } else {
+        this.showError(data.msg);
+      }
+    })
   }
 
   showLoading() {
@@ -142,36 +170,45 @@ export class CreatePage {
     this.loading.present();
   }
 
-  uploadSheet() {
-     let actionSheet = this.actionSheetCtrl.create({
-       title: 'Select Image Source',
-       buttons: [
-         {
-           text: 'Upload from Gallery',
-           handler: () => {
-            //  this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
-           }
-         },
-         {
-           text: 'Use Camera',
-           handler: () => {
-            //  this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
-           }
-         },
-         {
-           text: 'Upload Audio',
-           handler: () => {
-            //  this.takePicture(this.camera.PictureSourceType.CAMERA);
-           }
-         },
-         {
-           text: 'Cancel',
-           role: 'cancel'
-         }
-       ]
-     });
-     actionSheet.present();
-   }
+  presentToast(text: string) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 2000,
+    });
+
+    toast.present();
+  }
+
+  // uploadSheet() {
+  //    let actionSheet = this.actionSheetCtrl.create({
+  //      title: 'Select Image Source',
+  //      buttons: [
+  //        {
+  //          text: 'Upload from Gallery',
+  //          handler: () => {
+  //           //  this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+  //          }
+  //        },
+  //        {
+  //          text: 'Use Camera',
+  //          handler: () => {
+  //           //  this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+  //          }
+  //        },
+  //        {
+  //          text: 'Upload Audio',
+  //          handler: () => {
+  //           //  this.takePicture(this.camera.PictureSourceType.CAMERA);
+  //          }
+  //        },
+  //        {
+  //          text: 'Cancel',
+  //          role: 'cancel'
+  //        }
+  //      ]
+  //    });
+  //    actionSheet.present();
+  //  }
 
    showError(text) {
      let alert = this.alertCtrl.create({

@@ -42,9 +42,19 @@ export class HomePage {
     console.log('edit session', sessionId);
   }
 
+  removeSession(session, index) {
+    this.session.removeSession(session).subscribe( data => {
+      if(!data.success) {
+        this.showError(data.msg);
+      } else {
+        this.sessionList.splice(index, 1);
+      }
+    })
+  }
+
   viewSession(session) {
     console.log('view session', session.id);
-    this.nav.setRoot('view-page', {session: session});
+    this.nav.push('view-page', {session: session});
   }
 
   showError(text) {
