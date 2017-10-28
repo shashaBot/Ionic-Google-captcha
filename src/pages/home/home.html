@@ -14,11 +14,13 @@
 <ion-content class="home" padding>
   <h3>Welcome inside, {{user.name}}</h3>
   <ion-list>
-    <ion-item *ngFor="let session of sessionList; i=index">
+    <ion-item *ngFor="let session of sessionList; let i=index">
       <h2>{{session.name}}</h2>
       <p>{{session.createdAt | date: 'shortDate'}}</p>
       <button ion-button clear item-right (click)="viewSession(session)">View</button>
-      <button ion-button clear danger item-right (click)="removeSession(session, i)">View</button>
+      <button ion-button clear color="danger" icon-only item-right *ngIf="session.userId === user.id" (click)="removeSession(session, i)">
+        <ion-icon name="trash"></ion-icon>
+      </button>
     </ion-item>
   </ion-list>
 </ion-content>

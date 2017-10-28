@@ -48,6 +48,7 @@ export class HomePage {
         this.showError(data.msg);
       } else {
         this.sessionList.splice(index, 1);
+        console.log(data);
       }
     })
   }
