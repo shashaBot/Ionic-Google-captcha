@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { HttpModule } from '@angular/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+// import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
 // import { RegisterPage } from '../pages/register/register';
 // import { LoginPage } from '../pages/login/login';
@@ -18,7 +18,7 @@ import { MyApp } from './app.component';
 import { SessionProvider } from '../providers/session/session';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
-import { MediaCapture } from '@ionic-native/media-capture';
+// import { MediaCapture } from '@ionic-native/media-capture';
 import { AuthService } from '../providers/auth-service/auth-service';
 
 @NgModule({
@@ -35,10 +35,13 @@ import { AuthService } from '../providers/auth-service/auth-service';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      //tabs config
+      tabsHideonSubPages: true
+    }),
     HttpModule,
-    FormsModule,
-    ReactiveFormsModule,
+    // FormsModule,
+    // ReactiveFormsModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -57,7 +60,7 @@ import { AuthService } from '../providers/auth-service/auth-service';
     SessionProvider,
     FileTransfer,
     File,
-    MediaCapture
+    // MediaCapture
   ]
 })
 export class AppModule {}

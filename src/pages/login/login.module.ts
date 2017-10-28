@@ -3,7 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { LoginPage } from './login';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DirectivesModule } from '../../directives/directives.module';
+// import { DirectivesModule } from '../../directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +13,7 @@ import { DirectivesModule } from '../../directives/directives.module';
     IonicPageModule.forChild(LoginPage),
     FormsModule,
     ReactiveFormsModule,
-    DirectivesModule
+    // DirectivesModule
   ],
   exports: [
     LoginPage

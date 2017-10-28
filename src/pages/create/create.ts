@@ -21,7 +21,7 @@ export class CreatePage {
     name: '',
     desc: '',
     files: [],
-    token: 'sdfsfdsfdsfsdfsdfsfd'
+    token: Date.now()
   };
 
   public url:string = this.baseUrl + 'session/upload';

@@ -3,7 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { RegisterPage } from './register';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DirectivesModule } from '../../directives/directives.module';
+// import { DirectivesModule } from '../../directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -13,10 +13,10 @@ import { DirectivesModule } from '../../directives/directives.module';
     IonicPageModule.forChild(RegisterPage),
     FormsModule,
     ReactiveFormsModule,
-    DirectivesModule
+    // DirectivesModule
   ],
   exports: [
-    RegisterPageModule
+    RegisterPage
   ]
 })
 export class RegisterPageModule {}

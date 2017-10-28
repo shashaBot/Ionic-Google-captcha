@@ -1,5 +1,5 @@
 import { Component, ViewChild, AfterViewInit, Renderer2 } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
 import { SessionProvider } from '../../providers/session/session';
 
 @IonicPage({
@@ -13,6 +13,10 @@ export class ViewPage implements AfterViewInit {
   public session;
   public file;
   public dataUrl;
+
+  public loading: Loading;
+  public leaving: Boolean = false;
+
   private fileIndex: number = 0;
   @ViewChild('videoPlayer') videoPlayer;
   @ViewChild('audioPlayer') audioPlayer;
@@ -22,23 +26,23 @@ export class ViewPage implements AfterViewInit {
   baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
   apiUrl: string = 'session/stream_files?path='
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private sessionSer: SessionProvider, private ren: Renderer2) {
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private sessionSer: SessionProvider,
+    private ren: Renderer2,
+    private loadingCtrl: LoadingController) {
 
     this.session = this.navParams.get('session');
     // this.streamFile(this.fileIndex);
   }
 
   ngAfterViewInit() {
-    // this.videoPlayer.onended = this.onFileEnd;
-    console.log(this.videoPlayer);
-    console.log(this.audioPlayer);
-    console.log(this.imageEl);
     this.playFile(this.session.files[0]);
-    console.log('session', this.session);
   }
 
   playFile (file) {
-    if(!file) return;
+    if(!file) return this.navCtrl.setRoot('home-page');
+    if(this.leaving) return;
     let mediaDiv = this.mediaContainer.nativeElement;
     let type = file.type;
     let mediaEl, sourceEl;
@@ -58,7 +62,7 @@ export class ViewPage implements AfterViewInit {
       mediaEl = this.ren.createElement('audio');
       sourceEl = this.ren.createElement('source');
       this.ren.setProperty(mediaEl, 'autoplay', 'true');
-      this.ren.setProperty(mediaEl, 'controls', 'true');
+      // this.ren.setProperty(mediaEl, 'controls', 'true');
       this.ren.setProperty(sourceEl, 'src', this.baseUrl+this.apiUrl+file.path);
       this.ren.appendChild(mediaEl, sourceEl);
       this.ren.listen(mediaEl, 'ended', (e) => {
@@ -72,7 +76,7 @@ export class ViewPage implements AfterViewInit {
       mediaEl = this.ren.createElement('video');
       sourceEl = this.ren.createElement('source');
       this.ren.setProperty(mediaEl, 'autoplay', 'true');
-      this.ren.setProperty(mediaEl, 'controls', 'true');
+      // this.ren.setProperty(mediaEl, 'controls', 'true');
       this.ren.setProperty(sourceEl, 'src', this.baseUrl+this.apiUrl+file.path);
       this.ren.appendChild(mediaEl, sourceEl);
       this.ren.listen(mediaEl, 'ended', (e) => {
@@ -82,7 +86,6 @@ export class ViewPage implements AfterViewInit {
         this.playFile(this.session.files[this.fileIndex]);
       });
     }
-    console.log(mediaEl.nativeElement);
     this.ren.appendChild(mediaDiv, mediaEl);
   }
 
@@ -101,12 +104,14 @@ export class ViewPage implements AfterViewInit {
   }
 
   onImageLoaded() {
+    if(this.loading)
+      this.loading.dismiss();
     setTimeout(() => {
       this.onFileEnd();
     }, 5000);
   }
 
-  makeDataUrl( buffer ) {
+  makeDataUrl(buffer) {
     var binary = '';
     var bytes = new Uint8Array( buffer );
     var len = bytes.byteLength;
@@ -117,7 +122,20 @@ export class ViewPage implements AfterViewInit {
   }
 
   ionViewDidLoad() {
+    this.leaving = false;
     console.log('ionViewDidLoad ViewPage');
+  }
+
+  ionViewWillLeave() {
+    this.leaving = true;
+  }
+
+  showLoading() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait...',
+      dismissOnPageChange: true
+    });
+    this.loading.present();
   }
 
 }
