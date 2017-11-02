@@ -34,9 +34,14 @@ export class QrcodePage implements AfterViewInit {
   ionViewWillEnter() {
   }
 
+  ionViewWillLeave() {
+    window.document.querySelector('ion-app').classList.remove('transparentBody');
+  }
+
   ngAfterViewInit() {
     if(this.plt.is('mobile')) {
       this.ren.setStyle(this.content.nativeElement, 'background-color', 'transparent');
+      window.document.querySelector('ion-app').classList.add('transparentBody');
     }
   }
 
