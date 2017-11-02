@@ -30,7 +30,12 @@ export class SessionProvider {
   scannedQr (data) {
     let headers = new Headers();
     headers.append('Authorization', this.auth.getToken());
+    console.log(typeof(data), data);
     return this.http.post(this.baseUrl+'session/scan-qr', {token: data}, {headers: headers}).map(res => res.json());
+  }
+
+  removeAllTokens() {
+    return this.http.get(this.baseUrl+'session/remove-codes').map(res => res.json());
   }
 
   checkQr () {

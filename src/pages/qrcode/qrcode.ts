@@ -1,5 +1,5 @@
 import { Component, Renderer2, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, Loading, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, Loading, LoadingController, AlertController, Content } from 'ionic-angular';
 
 import { SessionProvider } from '../../providers/session/session';
 
@@ -16,7 +16,7 @@ export class QrcodePage implements AfterViewInit {
   sessionList: any[];
   scanned: boolean = false;
   scannedSession: any;
-  @ViewChild('content') content: ElementRef;
+  @ViewChild('content') content: Content;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -35,13 +35,17 @@ export class QrcodePage implements AfterViewInit {
   }
 
   ionViewWillLeave() {
-    window.document.querySelector('ion-app').classList.remove('transparentBody');
+    if(this.plt.is('core')) {
+      window.document.querySelector('ion-app').classList.remove('transparentBody');
+      this.sesSer.removeAllTokens().subscribe(res => console.log(res));
+    }
   }
 
   ngAfterViewInit() {
     if(this.plt.is('mobile')) {
-      this.ren.setStyle(this.content.nativeElement, 'background-color', 'transparent');
       window.document.querySelector('ion-app').classList.add('transparentBody');
+      window.document.querySelector('page-qrcode').classList.add('transparentBody');
+      this.ren.setStyle(this.content.getNativeElement(), 'background-color', 'transparent');
     }
   }
 
@@ -64,6 +68,7 @@ export class QrcodePage implements AfterViewInit {
 
   onSessionScanned(data) {
     //navigate to view session providing credentials from database.
+    console.log('session scanned!', data);
     this.navCtrl.setRoot('view-page', {session: data.session, token: data.token});
   }
 

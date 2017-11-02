@@ -81,7 +81,7 @@ export class HomePage {
   showLoading() {
     this.loading = this.loadingCtrl.create({
       content: 'Please wait...',
-      dismissOnPageChange: true
+      dismissOnPageChange: false
     });
     this.loading.present();
   }

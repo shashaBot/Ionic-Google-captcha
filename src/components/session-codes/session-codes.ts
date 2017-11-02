@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { Loading, LoadingController, AlertController } from 'ionic-angular';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Loading, LoadingController, AlertController, Nav } from 'ionic-angular';
 
 import { SessionProvider } from '../../providers/session/session';
 
@@ -13,6 +13,9 @@ export class SessionCodesComponent {
   loading: Loading;
   sessionList: any[];
   qrCodes: any[];
+  checkInterval:any;
+
+  @ViewChild(Nav) nav: Nav;
   @Output() scannedSession: EventEmitter<any> = new EventEmitter();
 
   constructor(private loadingCtrl: LoadingController,
@@ -24,14 +27,6 @@ export class SessionCodesComponent {
 
   ngOnInit() {
     this.showLoading();
-    // this.sesSer.listSession().subscribe( data => {
-    //   if(data.success){
-    //     this.loading.dismiss();
-    //     this.sessionList = data.data;
-    //   } else {
-    //     this.showError('Problem fetching data!');
-    //   }
-    // });
 
     this.sesSer.createQrCodes().subscribe( data => {
       if(data.success) {
@@ -43,12 +38,23 @@ export class SessionCodesComponent {
       }
     })
 
-    setInterval(() => {
+    this.checkInterval = setInterval(() => {
       this.sesSer.checkQr().subscribe((res) => {
         if(res.success)
           this.scannedSession.emit({session: res.session, token: res.token});
       })
     }, 3000);
+  }
+
+  ngAfterViewInit () {
+    // this.nav.viewWillEnter.subscribe( view => {
+    //   console.log(view);
+    // })
+    // this.nav.viewWillLeave.subscribe( view => {
+    //   console.log(view);
+    //   if(this.checkInterval)
+    //     clearInterval(this.checkInterval);
+    // })
   }
 
   showLoading() {
