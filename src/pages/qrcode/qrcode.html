@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title *ngIf="plt.is('core')">Qr Codes</ion-title>
+    <ion-title *ngIf="plt.is('mobile')">Scan QR Code</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding #content>
+  <session-codes *ngIf="plt.is('core')" (sessionScanned)="onSessionScanned(data)"></session-codes>
+  <scan-session-qr *ngIf="plt.is('mobile') && !scanned" (qrScanned)="onQrScanned(data)"></scan-session-qr>
+  <ion-row *ngIf="plt.is('mobile') && scanned">
+    <ion-col>
+      Session name:
+    </ion-col>
+    <ion-col>
+      {{scannedSession.name}}
+    </ion-col>
+  </ion-row>
+</ion-content>

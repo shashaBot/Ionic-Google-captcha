@@ -13,6 +13,7 @@ export class ViewPage implements AfterViewInit {
   public session;
   public file;
   public dataUrl;
+  private token: string;
 
   public loading: Loading;
   public mediaLoading: Loading
@@ -34,6 +35,7 @@ export class ViewPage implements AfterViewInit {
     private loadingCtrl: LoadingController) {
 
     this.session = this.navParams.get('session');
+    this.token = this.navParams.get('token');
     // this.streamFile(this.fileIndex);
   }
 
@@ -78,6 +80,7 @@ export class ViewPage implements AfterViewInit {
       this.ren.listen(mediaEl, 'ended', (e) => {
         console.log('file ended!');
         this.fileIndex++;
+        this.ren.removeChild(mediaDiv, audioImg);
         this.ren.removeChild(mediaDiv, mediaEl);
         this.playFile(this.session.files[this.fileIndex]);
       });
@@ -122,12 +125,12 @@ export class ViewPage implements AfterViewInit {
     this.ren.appendChild(mediaDiv, mediaEl);
   }
 
-  streamFile(index: number) : void {
-    this.file = this.session.files[index];
-    this.sessionSer.stream(this.file).subscribe( data => {
-      this.dataUrl = this.makeDataUrl(data);
-    });
-  }
+  // streamFile(index: number) : void {
+  //   this.file = this.session.files[index];
+  //   this.sessionSer.stream(this.file).subscribe( data => {
+  //     this.dataUrl = this.makeDataUrl(data);
+  //   });
+  // }
 
   onFileEnd () {
     console.log('file ended!');
@@ -144,15 +147,15 @@ export class ViewPage implements AfterViewInit {
     }, 5000);
   }
 
-  makeDataUrl(buffer) {
-    var binary = '';
-    var bytes = new Uint8Array( buffer );
-    var len = bytes.byteLength;
-    for (var i = 0; i < len; i++) {
-        binary += String.fromCharCode( bytes[ i ] );
-    }
-    return window.btoa( binary );
-  }
+  // makeDataUrl(buffer) {
+  //   var binary = '';
+  //   var bytes = new Uint8Array( buffer );
+  //   var len = bytes.byteLength;
+  //   for (var i = 0; i < len; i++) {
+  //       binary += String.fromCharCode( bytes[ i ] );
+  //   }
+  //   return window.btoa( binary );
+  // }
 
   ionViewDidLoad() {
     this.leaving = false;
@@ -161,6 +164,11 @@ export class ViewPage implements AfterViewInit {
 
   ionViewWillLeave() {
     this.leaving = true;
+    if(this.token) {
+      this.sessionSer.removeViewedToken(this.token).subscribe( res => {
+        console.log(res);
+      });
+    }
   }
 
   showLoading() {

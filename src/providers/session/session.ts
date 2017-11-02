@@ -13,28 +13,32 @@ export class SessionProvider {
   public baseUrl: string = 'https://ionic-node-auth.herokuapp.com/';
 
   constructor(public http: Http,
-    //  private transfer: FileTransfer,
      private auth: AuthService) {
     console.log('Hello SessionProvider Provider');
   }
-
-  // fileTransfer: FileTransferObject = this.transfer.create();
-
-  // upload(filePath: string) {
-  //   let options: FileUploadOptions = {
-  //      fileKey: 'sessionFile',
-  //      fileName: Date.now()+'',
-  //      mimeType: 'image/jpeg',
-  //      headers: {Authorization: this.auth.getToken()}
-  //   }
-  //
-  //   return this.fileTransfer.upload(filePath, this.baseUrl+'session/create', options, true);
-  // }
 
   createSession(session) {
     let headers = new Headers();
     headers.append('Authorization', this.auth.getToken());
     return this.http.post(this.baseUrl+'session/create', session, {headers: headers}).map(res => res.json());
+  }
+
+  createQrCodes() {
+    return this.http.get(this.baseUrl+'session/generate-qr').map(res => res.json());
+  }
+
+  scannedQr (data) {
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.getToken());
+    return this.http.post(this.baseUrl+'session/scan-qr', {token: data}, {headers: headers}).map(res => res.json());
+  }
+
+  checkQr () {
+    return this.http.get(this.baseUrl+'session/check-qr').map(res => res.json());
+  }
+
+  removeViewedToken(tokenId) {
+    return this.http.post(this.baseUrl+'session/remove-viewed', {tokenId: tokenId}).map(res => res.json());
   }
 
   removeFile(file) {

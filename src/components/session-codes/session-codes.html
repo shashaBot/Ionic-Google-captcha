@@ -1,0 +1,5 @@
+<ion-row>
+  <ion-col *ngFor="let code of qrCodes" col-md-6 col-sm-12>
+    <qr-code [value]="code" [size]="180"></qr-code>
+  </ion-col>
+</ion-row>

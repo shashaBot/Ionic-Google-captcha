@@ -93,4 +93,6 @@
     <engine name="android" spec="~6.1.2" />
     <plugin name="com.hutchind.cordova.plugins.streamingmedia" spec="~0.1.4" />
     <plugin name="cordova-plugin-filechooser" spec="~1.0.1" />
+    <plugin name="cordova-plugin-qrscanner" spec="~2.5.0" />
+    <allow-navigation href="http://192.168.86.40:8101" />
 </widget>

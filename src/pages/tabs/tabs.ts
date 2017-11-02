@@ -16,6 +16,7 @@ export class TabsPage {
 
   Create: any = 'create-page';
   View: any = 'home-page';
+  QrCode: any = 'qrcode-page';
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TabsPage');
