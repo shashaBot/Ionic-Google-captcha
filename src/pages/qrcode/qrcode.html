@@ -7,14 +7,6 @@
 </ion-header>
 
 <ion-content padding #content>
-  <session-codes *ngIf="plt.is('core')" (scannedSession)="onSessionScanned($event)"></session-codes>
-  <scan-session-qr *ngIf="plt.is('mobile') && !scanned" (qrScanned)="onQrScanned($event)"></scan-session-qr>
-  <ion-row *ngIf="plt.is('mobile') && scanned">
-    <ion-col>
-      Session name:
-    </ion-col>
-    <ion-col>
-      {{scannedSession.name}}
-    </ion-col>
-  </ion-row>
+  <session-codes *ngIf="plt.is('core')" [qrCodes]="qrCodes"></session-codes>
+  <scan-session-qr *ngIf="plt.is('cordova')" [scannedSession]="scannedSession" (qrScanned)="onQrScanned($event)"></scan-session-qr>
 </ion-content>

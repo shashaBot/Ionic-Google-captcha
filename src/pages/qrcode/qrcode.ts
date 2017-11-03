@@ -1,5 +1,5 @@
-import { Component, Renderer2, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, Loading, LoadingController, AlertController, Content } from 'ionic-angular';
+import { Component, Renderer2 } from '@angular/core';
+import { IonicPage, NavController, NavParams, Platform, Loading, LoadingController, AlertController } from 'ionic-angular';
 
 import { SessionProvider } from '../../providers/session/session';
 
@@ -10,13 +10,14 @@ import { SessionProvider } from '../../providers/session/session';
   selector: 'page-qrcode',
   templateUrl: 'qrcode.html',
 })
-export class QrcodePage implements AfterViewInit {
+export class QrcodePage {
 
   loading: Loading;
   sessionList: any[];
   scanned: boolean = false;
   scannedSession: any;
-  @ViewChild('content') content: Content;
+  qrCodes: any[];
+  checkInterval: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -32,20 +33,33 @@ export class QrcodePage implements AfterViewInit {
   }
 
   ionViewWillEnter() {
+    if(this.plt.is('core')) {
+      this.showLoading();
+      this.sesSer.createQrCodes().subscribe( data => {
+        if(data.success) {
+          this.loading.dismiss();
+          this.qrCodes = data.data;
+          console.log(this.qrCodes);
+        } else {
+          this.showError('Error in displaying QR codes!');
+        }
+      });
+      this.checkInterval = setInterval(() => {
+        this.sesSer.checkQr().subscribe((res) => {
+          if(res.success)
+            this.onSessionScanned({session: res.session, token: res.token});
+        })
+      }, 3000);
+    }
   }
 
   ionViewWillLeave() {
     if(this.plt.is('core')) {
-      window.document.querySelector('ion-app').classList.remove('transparentBody');
       this.sesSer.removeAllTokens().subscribe(res => console.log(res));
-    }
-  }
 
-  ngAfterViewInit() {
-    if(this.plt.is('mobile')) {
-      window.document.querySelector('ion-app').classList.add('transparentBody');
-      window.document.querySelector('page-qrcode').classList.add('transparentBody');
-      this.ren.setStyle(this.content.getNativeElement(), 'background-color', 'transparent');
+      if(this.checkInterval){
+        clearInterval(this.checkInterval)
+      }
     }
   }
 
@@ -69,7 +83,7 @@ export class QrcodePage implements AfterViewInit {
   onSessionScanned(data) {
     //navigate to view session providing credentials from database.
     console.log('session scanned!', data);
-    this.navCtrl.setRoot('view-page', {session: data.session, token: data.token});
+    this.navCtrl.push('view-page', {session: data.session, token: data.token});
   }
 
   showLoading() {

@@ -1,0 +1,16 @@
+<ion-row *ngIf="scanned && !isScanning">
+  <ion-col>
+    Session name:
+  </ion-col>
+  <ion-col>
+    {{scannedSession.name}}
+  </ion-col>
+  <ion-col col-12>
+    <button ion-button full (click)="startScanner()">Scan Again</button>
+  </ion-col>
+</ion-row>
+<ion-row *ngIf="!scanned && !isScanning">
+  <ion-col>
+    <button ion-button full (click)="startScanner()">Start Scanner</button>
+  </ion-col>
+</ion-row>

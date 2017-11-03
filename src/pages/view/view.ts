@@ -44,7 +44,7 @@ export class ViewPage implements AfterViewInit {
   }
 
   playFile (file) {
-    if(!file) return this.navCtrl.setRoot('home-page');
+    if(!file) return this.navCtrl.pop();
     if(this.leaving) return;
     this.file = file;
     let mediaDiv = this.mediaContainer.nativeElement;
@@ -164,11 +164,11 @@ export class ViewPage implements AfterViewInit {
 
   ionViewWillLeave() {
     this.leaving = true;
-    if(this.token) {
-      this.sessionSer.removeViewedToken(this.token).subscribe( res => {
-        console.log(res);
-      });
-    }
+    // if(this.token) {
+    //   this.sessionSer.removeViewedToken(this.token).subscribe( res => {
+    //     console.log(res);
+    //   });
+    // }
   }
 
   showLoading() {
@@ -183,7 +183,7 @@ export class ViewPage implements AfterViewInit {
     this.mediaLoading = this.loadingCtrl.create({
       content: 'Buffering...',
       spinner: 'circles',
-      dismissOnPageChange: true
+      dismissOnPageChange: false
     });
     this.mediaLoading.present();
   }
